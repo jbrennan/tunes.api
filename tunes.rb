@@ -11,9 +11,13 @@ require 'data_mapper'
 require 'email_veracity'
 require 'redcarpet'
 
+require './scrape.rb'
 require './util/pbkdf2.rb'
 require './util/config.rb'
 require './util/constants.rb'
+
+require "./models/archive.rb"
+require "./models/track.rb"
 
 
 
@@ -93,6 +97,101 @@ end
 get '/' do
 	haml :index
 end
+
+
+get '/scrape' do
+	
+	# should_fetch_playlist = Proc.new do |date|
+	# 	archive = Archive.first(:archive_name => date)
+	# 	puts "archive was nil" if archive == nil
+	# 	return true if archive == nil
+	# end
+	# 
+	# 
+	# process_track = Proc.new do |link, text, date, index|
+	# 	archive = Archive.first_or_create(:archive_name => date)
+	# 	
+	# 	parts = text.partition(" - ")
+	# 	artist_name = parts[0]
+	# 	track_name = parts[2]
+	# 	
+	# 	track = Track.first_or_create(:track_name => track_name, :track_artist_name => artist_name)
+	# 	track.track_file_url = link
+	# 	track.track_number = index
+	# 	track.archive = archive
+	# 	
+	# 	track.save
+	# 	archive.save
+	# 	
+	# 	
+	# end
+	
+	puts "going to start the fetch"
+	internal_scrape
+	"Done"
+end
+
+
+def internal_scrape
+
+	puts "Fetching archive list"
+	agent = Mechanize.new
+	page = agent.get("http://tunes.io/archive.jsp")
+
+	archive_links = page.links_with(:href => /playlist.jsp/)
+	puts "Found archives online: " + archive_links.inspect
+
+	archive_links.each do |archive_link|
+		date = archive_link.text
+		
+
+		if should_fetch_playlist(date) == false
+			puts "Skipping playlist for date " + date
+			next
+		end
+
+		puts "Visiting archive for date: " + date
+		archive = archive_link.click
+
+		track_links = archive.search("ul.playlist li a")
+		index = 0
+		track_links.each do |track|
+			link = track[:href]
+			text = track.content
+
+			process_track link, text, date, index
+
+			index = index + 1
+
+			puts "Found #{text} at #{link}"
+		end
+	end
+end
+
+
+def should_fetch_playlist(date)
+	archive = Archive.first(:archive_name => date)
+	puts "archive was nil" if archive == nil
+	return archive == nil
+end
+
+
+def process_track(link, text, date, index)
+	archive = Archive.first_or_create(:archive_name => date)
+	
+	parts = text.partition(" - ")
+	artist_name = parts[0]
+	track_name = parts[2]
+	
+	track = Track.first_or_create(:track_name => track_name, :track_artist_name => artist_name)
+	track.track_file_url = link
+	track.track_number = index
+	track.archive = archive
+	
+	track.save
+	archive.save
+end
+
 
 
 
