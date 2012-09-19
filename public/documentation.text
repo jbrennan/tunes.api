@@ -49,7 +49,7 @@ Returns a JSON object representing all playlists.
 
 Get all tracks for a given playlist date.
 
-	/api/1/playslists.tracks/_date_
+	/api/1/playlists.tracks/_date_
 
 ####Parameters
 
