@@ -136,6 +136,7 @@ def internal_scrape
 
 	puts "Fetching archive list"
 	agent = Mechanize.new
+	agent.user_agent_alias = 'Friendly Tunes.io scraper bot by jbrennan@nearthespeedoflight.com'
 	page = agent.get("http://tunes.io/archive.jsp")
 
 	archive_links = page.links_with(:href => /playlist.jsp/)
@@ -251,6 +252,44 @@ end
 # API
 #########################
 
+
+get '/api/1/playlists.list' do
+	playlists = Archive.all(:order => [:archive_name.desc])
+	names = []
+	playlists.each do |playlist|
+		names << playlist.archive_name
+	end
+	
+	return {
+		:status => "OK",
+		:playlists => names
+	}.to_json
+end
+
+
+get '/api/1/playlists.tracks/:playlist_name' do
+	playlist = Archive.first(:archive_name => params[:playlist_name])
+	return {
+		:status => "error"
+	}.to_json if nil == playlist
+	
+	raw_tracks = Track.all(:archive => playlist, :order => [:track_number.asc])
+	tracks = []
+	
+	raw_tracks.each do |track|
+		tracks << {
+			:track_name => track.track_name,
+			:track_number => track.track_number,
+			:track_artist_name => track.track_artist_name,
+			:track_url => track.track_file_url
+		}
+	end
+	
+	return {
+		:status => "OK",
+		:tracks => tracks
+	}.to_json
+end
 
 
 
