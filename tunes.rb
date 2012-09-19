@@ -101,31 +101,6 @@ end
 
 get '/scrape' do
 	
-	# should_fetch_playlist = Proc.new do |date|
-	# 	archive = Archive.first(:archive_name => date)
-	# 	puts "archive was nil" if archive == nil
-	# 	return true if archive == nil
-	# end
-	# 
-	# 
-	# process_track = Proc.new do |link, text, date, index|
-	# 	archive = Archive.first_or_create(:archive_name => date)
-	# 	
-	# 	parts = text.partition(" - ")
-	# 	artist_name = parts[0]
-	# 	track_name = parts[2]
-	# 	
-	# 	track = Track.first_or_create(:track_name => track_name, :track_artist_name => artist_name)
-	# 	track.track_file_url = link
-	# 	track.track_number = index
-	# 	track.archive = archive
-	# 	
-	# 	track.save
-	# 	archive.save
-	# 	
-	# 	
-	# end
-	
 	puts "going to start the fetch"
 	internal_scrape
 	"Done"
