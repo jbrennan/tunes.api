@@ -97,7 +97,7 @@ end
 
 get '/' do
 	# api-documentation page
-	doc_md = File.new("public/documentation.text", "r").read
+	doc_md = File.new("./public/documentation.text", "r").read
 	markdown = RedMarkdown.new(doc_md)#Maruku.new(doc_md)
 	# read in the markdow, parse it, and stick it in a variable. then render with haml
 	@documentation_html = markdown.to_html
