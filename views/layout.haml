@@ -10,17 +10,32 @@
 		
 		%link{:rel=>'stylesheet', :href=>'/styles/1140.css', :media => "screen"}
 		%link{:rel=>'stylesheet', :href=>'/styles/user_tiger.css', :media => "screen"}
+		%link{:rel => "author", :href => "mailto:jbrennan@nearthespeedoflight.com"}
 		
 		%script{:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"}
 		%script{:src => "/js/app.js"}
 		%script{:src => "/js/css3-mediaqueries.js"}
 	%body
 	
-		%section{:id => "site_mast", :class => "container"}
-			%header{:class => "row"}
-				.twocol
-				%a{:href => "/", :class => "site_mast_title tencol last"}
-					.site_mast_title_span= SiteName
-		
+		%section{:id => "mast", :class => "container"}
+			.row
+				%header
+					.twocol
+					%a{:href => "/", :class => "fivecol mast_title"}= SiteName
+					%nav{:class => "site_navigation threecol last"}
+						%ul{:class => "nav_list"}
+							%li
+								%a{:href => "http://github.com/jbrennan/tunes.api"} Source on Github
+					.twocol
+					
+					
 		%section{:id => "content", :class => "container"}
-			= yield
+			.row
+				= yield
+				
+						
+						
+		%footer{:class => "container"}
+			.row
+				.twocol
+				%p{:class => "eightcol"} Copyright 1988 - Present, Jason Brennan.
