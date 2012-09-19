@@ -1,0 +1,109 @@
+Tunes JSON API
+===============
+
+##Introduction
+
+The Tunes.API web service provides a simple REST interface for your applications to make use of. The interfaces work over simple HTTP, and return to you [JSON] [json] objects.
+
+   [json]: http://json.org
+
+
+In its simplest form, the API requires your application to make an HTTP GET request with the proper parameters, and a JSON object (described below) will be returned as a response. You can then process this object and present the resulting playlists and tracks to your user.
+
+
+Below are the Tunes.API interfaces described in more detail, along with examples of expected Request and Response formats.
+
+
+
+##Getting Playlists
+
+###playlists.list
+
+Get all playlists
+
+	/api/1/playlists.list
+
+
+####Return value
+
+Returns a JSON object representing all playlists.
+
+	{
+		"status"    : "OK",
+		"error"     : "",
+		"playlists"	: [
+						"2012-09-17",
+						"2012-09-16",
+						"2012-09-15"
+					]
+	}
+
+*Note: A description for each object and all its possible values may be found [below] [objects]*
+
+   [objects]: #object_meanings
+
+
+
+###playlists.tracks
+
+Get all tracks for a given playlist date.
+
+	/api/1/playslists.tracks/_date_
+
+####Parameters
+
+date
+:	(string) A `playlist` date in the format of `YYYY-MM-DD` as obtained from `playlists.list`.
+
+
+####Return value
+
+Returns a JSON object representing the desired playlist and its tracks.
+
+	{
+		"status"    : "OK",
+		"error"     : "",
+		"tracks"	: [
+						{
+							"track_name"		: "I Only Have Eyes for You",
+							"track_number"		: 0,
+							"track_artist_name"	: "Beck",
+							"track_url"			: "http://cdn.epitonic.com/uploads/tracks/Beck-I_Only_Have_Eyes_For_You_The_Flamingos_Cover.mp3"
+						}, // etc.
+		]
+	}
+
+*Note: A description for each object and all its possible values may be found [below] [objects]*
+
+
+
+####Discussion
+
+The returned tracks might appear out of order, so your application should sort them based on `track_number`.
+
+
+<h2 id = "object_meanings">Expected JSON Objects</h2>
+
+The JSON object returned to you is composed of nested sub-objects, each of which are described below. In most cases, all objects are returned no matter which request is made, with **exceptions noted**.
+
+*Note:* the sub-objects are not guaranteed to appear in the same order as described in the sample output.
+
+####Objects
+
+status
+:	(string) The status of the request. There are two possible values:
+
+	*"OK"* The request was good. Ignore what's in `error`.
+
+	*"ERROR"* There was an error in the request. Check `error` to see the message.
+	
+
+error
+:	(string) The error returned if `status` was "ERROR". This value is to be ignored in all other cases.
+
+
+playlists
+:	(array) An array of 0 or more date strings of the format `YYYY-MM-DD` which can be used to get playlist tracks. This object will always be an array, even if it has 0 or 1 elements.
+
+tracks
+:	(array) An array of 0 or more track objects. This object will always be an array, even if it has 0 or 1 elements.
