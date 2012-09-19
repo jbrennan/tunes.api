@@ -3,9 +3,10 @@ Tunes JSON API
 
 ##Introduction
 
-The Tunes.API web service provides a simple REST interface for your applications to make use of. The interfaces work over simple HTTP, and return to you [JSON] [json] objects.
+The Tunes.API web service provides a simple REST interface for the excellent [Tunes.io] [io]. The interfaces work over simple HTTP, and return to you [JSON] [json] objects.
 
    [json]: http://json.org
+   [io]: http://tunes.io
 
 
 In its simplest form, the API requires your application to make an HTTP GET request with the proper parameters, and a JSON object (described below) will be returned as a response. You can then process this object and present the resulting playlists and tracks to your user.

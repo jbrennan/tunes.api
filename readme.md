@@ -3,12 +3,21 @@ tunes.api — A friendly JSON API on top of Tunes.io
 
 A few weeks ago I discovered the lovely [Tunes.io] [io] site by Everlook.ca. The site provides a playlist of new, mostly indie — and totally awesome — tracks every day.
 
+[io]: http://tunes.io
+
 But I found using it in a browser to be a little confining, so I've written a small Sinatra web app that can scrape the site (gently!) and provides a really small JSON API for non-browser clients.
 
 To Install
 ----------
 
 Clone and `cd` into the repo, then use `bundle install` to install all the dependencies. If you're running it on a local (i.e., dev) machine, use `ruby tunes.rb` to run it. If you're running on a hosted service, Rack should pick up the `config.ru` on its own.
+
+API Docs
+--------
+
+Refer to the included `public/documentation.text` or visit [my site] [tunes] to see the docs real pretty like.
+
+[tunes]: http://tunes.nearthespeedoflight.com
 
 To use
 ------
