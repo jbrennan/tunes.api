@@ -120,7 +120,7 @@ def internal_scrape
 
 	puts "Fetching archive list"
 	agent = Mechanize.new
-	agent.user_agent_alias = 'Friendly Tunes.io scraper bot by jbrennan@nearthespeedoflight.com'
+	agent.user_agent = 'Friendly Tunes.io scraper bot by jbrennan@nearthespeedoflight.com'
 	page = agent.get("http://tunes.io/archive.jsp")
 
 	archive_links = page.links_with(:href => /playlist.jsp/)
